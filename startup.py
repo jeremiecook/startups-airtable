@@ -5,7 +5,7 @@ import csv
 
 import pandas
 import requests
-from airtable import airtable
+from AirtableAPI import AirtableAPI
 
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -16,8 +16,6 @@ def get_env():
     env = join(dirname(__file__), '.env')
     load_dotenv(env)
     # print(os.getenv('AIRTABLE_BASE_ID'))
-    # print(os.getenv('AIRTABLE_API_KEY'))
-    # print(os.getenv('AIRTABLE_TABLE'))
 
 
 def get_startups_from_source():
@@ -29,40 +27,10 @@ def get_startups_from_source():
     return startups
 
 
-def get_startups_from_airtable():
-    # Récupérer les données Airtable
-    at = airtable.Airtable(
-        os.getenv('AIRTABLE_BASE_ID'),
-        os.getenv('AIRTABLE_API_KEY')
-    )
-    records = at.get(os.getenv('AIRTABLE_TABLE'),
-                     fields=['ID', 'Nom', 'Statut'])
-
-    startups = records['records']
-    # print(startups)
-
-    while records.get('offset'):
-        records = at.get(
-            os.getenv('AIRTABLE_TABLE'),
-            fields=['ID', 'Nom', 'Statut'],
-            offset=records.get('offset')
-        )
-        startups += records['records']
-
-    # ,limit=10
-    return startups
-
-
 def find_new_se(beta_base, airtable_base):
     # extraire des colonnes de la base
     # print(beta_base)
     # print(beta_base.loc[:, ["id", "name"]])
-
-    # boucler dans la base
-    # for s in beta_base:
-    #     print(s)
-    # for id in beta_base["id"]:
-    # print(id)
 
     new_startups = []
 
@@ -78,12 +46,28 @@ def find_new_se(beta_base, airtable_base):
 
 
 get_env()
+
+api = AirtableAPI(
+    base=os.getenv('AIRTABLE_BASE_ID'),
+    key=os.getenv('AIRTABLE_API_KEY'),
+    table=os.getenv('AIRTABLE_TABLE')
+)
+
+#api.create("hello", "Hello", "Dire bonjour")
+
+
 startups_source = get_startups_from_source()
-startups_airtable = get_startups_from_airtable()
+startups_airtable = api.all()
+
 # print(startups_source[0])
 # print(startups_airtable['records'][0]['fields']['ID'])
 
 new_se = find_new_se(startups_source, startups_airtable)
 
+
+print("\nNouvelles Startups :\n")
+
+for se in new_se:
+    print("* " + se['name'] + " (" + se['id'] + ")")
 #print([se['fields'].get('ID') for se in startups_source['records']])
-print([se['id'] for se in new_se])
+#print([se['id'] for se in new_se])
