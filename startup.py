@@ -35,8 +35,20 @@ def get_startups_from_airtable():
         os.getenv('AIRTABLE_BASE_ID'),
         os.getenv('AIRTABLE_API_KEY')
     )
-    startups = at.get(os.getenv('AIRTABLE_TABLE'),
-                      fields=['ID', 'Nom', 'Statut'])
+    records = at.get(os.getenv('AIRTABLE_TABLE'),
+                     fields=['ID', 'Nom', 'Statut'])
+
+    startups = records['records']
+    # print(startups)
+
+    while records.get('offset'):
+        records = at.get(
+            os.getenv('AIRTABLE_TABLE'),
+            fields=['ID', 'Nom', 'Statut'],
+            offset=records.get('offset')
+        )
+        startups += records['records']
+
     # ,limit=10
     return startups
 
@@ -55,7 +67,8 @@ def find_new_se(beta_base, airtable_base):
     new_startups = []
 
     # Liste d'ids dans Airtable
-    ids = [se['fields'].get('ID') for se in airtable_base['records']]
+    ids = [se['fields'].get('ID') for se in airtable_base]
+    # print(ids)
 
     for startup in beta_base:
         if (startup['id'] not in ids):
@@ -71,4 +84,6 @@ startups_airtable = get_startups_from_airtable()
 # print(startups_airtable['records'][0]['fields']['ID'])
 
 new_se = find_new_se(startups_source, startups_airtable)
-print(new_se)
+
+#print([se['fields'].get('ID') for se in startups_source['records']])
+print([se['id'] for se in new_se])
