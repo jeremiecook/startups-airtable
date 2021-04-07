@@ -35,8 +35,9 @@ def get_startups_from_airtable():
         os.getenv('AIRTABLE_BASE_ID'),
         os.getenv('AIRTABLE_API_KEY')
     )
-    startups = at.get(os.getenv('AIRTABLE_TABLE'), limit=10,
+    startups = at.get(os.getenv('AIRTABLE_TABLE'),
                       fields=['ID', 'Nom', 'Statut'])
+    # ,limit=10
     return startups
 
 
