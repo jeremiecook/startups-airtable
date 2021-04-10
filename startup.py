@@ -2,8 +2,8 @@
 
 import os
 import csv
+import json
 
-import pandas
 import requests
 from AirtableAPI import AirtableAPI
 
@@ -20,11 +20,13 @@ def get_env():
 
 def get_startups_from_source():
     # Récupérer des données CSV sur le site Beta Gouv
-    url = "https://beta.gouv.fr/api/v1.7/startups.csv"
-    startups = pandas.read_csv(
-        url, error_bad_lines=False, engine="python").to_dict(orient='records')
+    url = "https://beta.gouv.fr/api/v2.1/startups.json"
+    # startups = pandas.read_csv(
+    #    url, error_bad_lines=False, engine="python").to_dict(orient='records')
+    startups = json.loads(requests.get(url).text)
+    # print(startups.get('data'))
     # ajouter le paramètre quotechar="'" quand le csv sera réparé
-    return startups
+    return startups.get('data')
 
 
 def find_new_se(beta_base, airtable_base):
@@ -39,7 +41,8 @@ def find_new_se(beta_base, airtable_base):
     # print(ids)
 
     for startup in beta_base:
-        if (startup['id'] not in ids):
+
+        if (startup.get('id') not in ids):
             new_startups.append(startup)
 
     return new_startups
@@ -62,12 +65,13 @@ startups_airtable = api.all()
 # print(startups_source[0])
 # print(startups_airtable['records'][0]['fields']['ID'])
 
+#new_se = []
 new_se = find_new_se(startups_source, startups_airtable)
 
 
 print("\nNouvelles Startups :\n")
 
 for se in new_se:
-    print("* " + se['name'] + " (" + se['id'] + ")")
+    print("* " + se.get('attributes').get('name') + " (" + se.get('id') + ")")
 #print([se['fields'].get('ID') for se in startups_source['records']])
 #print([se['id'] for se in new_se])
