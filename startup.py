@@ -15,28 +15,23 @@ class SyncStartup:
 
 
 	def find_new_se(self):
-		print("hello")
-		# Liste d'ids dans Airtable
-		# ids = [se['fields'].get('ID') for se in airtable_base]
+		self.new_startups = {}
+		for id in self.beta_startups:
+			if not self.airtable_startups.get(id):
+				self.new_startups[id] = self.beta_startups.get(id)
+				print(id)
 
-		# new_startups = []
-		# for startup in beta_base:
-		# 	if (startup.get('id') not in ids):
-		# 		new_startups.append(startup)
-
-		# return new_startups
+		return self.new_startups
 
 	def print_new_se(self):
-		print("print_new_se")
-		# new_se = find_new_se(startups_source, startups_airtable)
-		# print("\nNouvelles Startups :")
-		# for se in new_se:
-		# 	print("* {name} ({id}) - {phase} - {mission}".format(
-		# 		name=se.get('attributes').get('name'), 
-		# 		id=se.get('id'),
-		# 		phase=se.get('attributes').get('phases')[-1].get('name'), 
-		# 		mission=se.get('attributes').get('pitch')
-		# 	))
+		print("\nNouvelles Startups :")
+		for id, se in self.new_startups.items():
+			print("* {name} ({id}) - {phase} - {mission}".format(
+				name=se.get('name'), 
+				id=id,
+				phase=se.get('phase'), 
+				mission=se.get('mission')
+			))
 
 	def load_new_se(self):
 		print("load_new_se")
@@ -52,6 +47,6 @@ class SyncStartup:
 
 sync = SyncStartup()
 sync.find_new_se()
-
+sync.print_new_se()
 
 
