@@ -14,27 +14,40 @@ class SyncStartup:
 		self.airtable_startups = self.airtable.all()
 
 
-	def find_new_se(self):
+	def new_startups(self, verbose=True, create=False):
 		self.new_startups = {}
+
+		if verbose: 
+			print("\n🆕 Nouvelles Startups :")
 		for id in self.beta_startups:
 			if not self.airtable_startups.get(id):
-				self.new_startups[id] = self.beta_startups.get(id)
-				print(id)
+				se = self.beta_startups.get(id)
+
+				self.new_startups[id] = se
+				if verbose:
+					print("* {name} ({id}) - {phase} - {mission}".format(
+						name=se.get('name'), 
+						id=id,
+						phase=se.get('phase'), 
+						mission=se.get('mission')
+					))
+
+		if verbose: 
+			print("👉 {count} nouvelles SE".format(count=len(self.new_startups)))
 
 		return self.new_startups
 
-	def print_new_se(self):
-		print("\nNouvelles Startups :")
-		for id, se in self.new_startups.items():
-			print("* {name} ({id}) - {phase} - {mission}".format(
-				name=se.get('name'), 
-				id=id,
-				phase=se.get('phase'), 
-				mission=se.get('mission')
-			))
-
 	def load_new_se(self):
-		print("load_new_se")
+		return 1
+		# print("\nNouvelles Startups :")
+		# for id, se in self.new_startups.items():
+		# 	print("* {name} ({id}) - {phase} - {mission}".format(
+		# 		name=se.get('name'), 
+		# 		id=id,
+		# 		phase=se.get('phase'), 
+		# 		mission=se.get('mission')
+		# 	))
+		# print("load_new_se")
 		# new_se = find_new_se(startups_source, startups_airtable)
 		# for se in new_se:
 		# 	id = se.get('id')
@@ -46,7 +59,7 @@ class SyncStartup:
 
 
 sync = SyncStartup()
-sync.find_new_se()
-sync.print_new_se()
+sync.new_startups()
+# sync.print_new_se()
 
 
