@@ -15,30 +15,20 @@ def get_env():
    # Récupérer les variables d'environnement (API Airtable)
     env = join(dirname(__file__), '.env')
     load_dotenv(env)
-    # print(os.getenv('AIRTABLE_BASE_ID'))
-
 
 def get_startups_from_source():
     # Récupérer des données CSV sur le site Beta Gouv
     url = "https://beta.gouv.fr/api/v2.1/startups.json"
-    # startups = pandas.read_csv(
-    #    url, error_bad_lines=False, engine="python").to_dict(orient='records')
     startups = json.loads(requests.get(url).text)
-    # print(startups.get('data'))
-    # ajouter le paramètre quotechar="'" quand le csv sera réparé
     return startups.get('data')
 
 
 def find_new_se(beta_base, airtable_base):
     # extraire des colonnes de la base
-    # print(beta_base)
-    # print(beta_base.loc[:, ["id", "name"]])
-
     new_startups = []
 
     # Liste d'ids dans Airtable
     ids = [se['fields'].get('ID') for se in airtable_base]
-    # print(ids)
 
     for startup in beta_base:
 
@@ -46,6 +36,19 @@ def find_new_se(beta_base, airtable_base):
             new_startups.append(startup)
 
     return new_startups
+
+def print_new_se(new_se):
+	print("\nNouvelles Startups :")
+	for se in new_se:
+	    print("* {name} ({id}) - {phase} - {mission}".format(
+	    	name=se.get('attributes').get('name'), 
+	    	id=se.get('id'),
+	    	phase=se.get('attributes').get('phases')[-1].get('name'), 
+    		mission=se.get('attributes').get('pitch')
+	    ))
+
+def load_new_se(new_se):
+	new_se = find_new_se(startups_source, startups_airtable)
 
 
 get_env()
@@ -56,16 +59,9 @@ api = AirtableAPI(
     table=os.getenv('AIRTABLE_TABLE')
 )
 
-#api.create("hello", "Hello", "Dire bonjour")
-
-
 startups_source = get_startups_from_source()
 startups_airtable = api.all()
 
-# print(startups_source[0])
-# print(startups_airtable['records'][0]['fields']['ID'])
-
-#new_se = []
 new_se = find_new_se(startups_source, startups_airtable)
 
 
