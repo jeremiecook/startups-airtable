@@ -57,5 +57,5 @@ class AirtableAPI:
             print("Error: cannot create startup {name} ({id}):".format(name=name, id=id))
             print(err)
 
-    def update(self, id, name, mission, start):
+    def update(self, id, name, mission, phase):
         end
