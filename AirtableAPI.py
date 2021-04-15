@@ -23,11 +23,16 @@ class AirtableAPI:
         # ,limit=10
         return startups
 
-    def create(self, id, name, mission):
-        self.api.create(self.table,
+    def create(self, id, name, mission, phase):
+        try:
+            self.api.create(self.table,
                         {'ID': id,
                          'Nom': name,
-                         'Mission': mission})
+                         'Mission': mission, 
+                         'Statut': phase})
+        except airtable.AirtableError as err:
+            print("Error: cannot create startup {name} ({id}):".format(name=name, id=id))
+            print(err)
 
     def update(self, id, name, mission, start):
         end
