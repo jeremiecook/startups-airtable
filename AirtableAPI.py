@@ -1,11 +1,24 @@
 from airtable import airtable
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 
 class AirtableAPI:
 
-    def __init__(self, base, key, table):
-        self.api = airtable.Airtable(base, key)
-        self.table = table
+    def __init__(self):
+        self.__get_env()
+        self.api = airtable.Airtable(self.base, self.key)
+        self.startups = {}
+
+    def __get_env(self):
+        # Récupérer les variables d'environnement (API Airtable)
+        env = join(dirname(__file__), '.env')
+        load_dotenv(env)
+
+        self.base=os.getenv('AIRTABLE_BASE_ID')
+        self.key=os.getenv('AIRTABLE_API_KEY')
+        self.table=os.getenv('AIRTABLE_TABLE')
 
     def all(self):
         # Récupérer les données Airtable
@@ -20,8 +33,18 @@ class AirtableAPI:
             )
             startups += records['records']
 
-        # ,limit=10
-        return startups
+        # Load result in a nice dict
+        for se in startups:
+            self.startups[se.get("fields").get("ID")] = dict(
+                name=se.get("fields").get("Nom"), 
+                phase=se.get("fields").get("Statut"), 
+                airtable_id=se.get("id"), 
+            )
+
+        return self.startups
+
+    def get(self, id):
+        return self.startups.get(id)
 
     def create(self, id, name, mission, phase):
         try:

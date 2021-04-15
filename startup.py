@@ -1,37 +1,13 @@
 # coding: utf-8
-
-import os
-import csv
-import json
-
-import requests
 from AirtableAPI import AirtableAPI
-
-from os.path import join, dirname
-from dotenv import load_dotenv
-
-
-def get_env():
-   # Récupérer les variables d'environnement (API Airtable)
-	env = join(dirname(__file__), '.env')
-	load_dotenv(env)
-
-def get_startups_from_source():
-	# Récupérer des données CSV sur le site Beta Gouv
-	url = "https://beta.gouv.fr/api/v2.1/startups.json"
-	startups = json.loads(requests.get(url).text)
-	return startups.get('data')
-
+from BetaGouvAPI import BetaGouvAPI
 
 def find_new_se(beta_base, airtable_base):
-	# extraire des colonnes de la base
-	new_startups = []
-
 	# Liste d'ids dans Airtable
 	ids = [se['fields'].get('ID') for se in airtable_base]
 
+	new_startups = []
 	for startup in beta_base:
-
 		if (startup.get('id') not in ids):
 			new_startups.append(startup)
 
@@ -59,15 +35,16 @@ def load_new_se():
 		api.create(id, name, mission, phase)
 
 
-get_env()
 
-api = AirtableAPI(
-	base=os.getenv('AIRTABLE_BASE_ID'),
-	key=os.getenv('AIRTABLE_API_KEY'),
-	table=os.getenv('AIRTABLE_TABLE')
-)
+airtable = AirtableAPI()
+startups_airtable = airtable.all()
+# print(startups_airtable)
+# print(airtable.get("trackdechets"))
 
-startups_source = get_startups_from_source()
-startups_airtable = api.all()
+beta = BetaGouvAPI()
+startups_source = beta.all()
+# print(startups_source)
+# print(beta.get("trackdechets"))
 
-load_new_se()
+
+
