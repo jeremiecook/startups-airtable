@@ -26,5 +26,10 @@ AIRTABLE_TABLE=Startups
 ## Lancer le programme
 
 ```
+# Voir la liste des SE qui ont changé
 python3 startup.py
+
+# Mettre à jour les SE
+python3 startup.py -w
+
 ```

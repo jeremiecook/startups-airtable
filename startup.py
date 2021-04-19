@@ -1,4 +1,19 @@
+"""Show outdated SE from Airtable
+
+Usage:
+	startup.py
+	startup.py -w|--write
+	startup.py -h|--help
+	startup.py -v|--version
+
+Options:
+	-w --write  Sync outdated SE
+	-h --help  Show this screen
+	-v --version  Show version
+"""
+
 # coding: utf-8
+from docopt import docopt
 from AirtableAPI import AirtableAPI
 from BetaGouvAPI import BetaGouvAPI
 
@@ -75,10 +90,15 @@ class SyncStartup:
 			))
 
 
-verbose = True
-write = False
+if __name__ == '__main__':
+	arguments = docopt(__doc__, version='1.0')
+	sync = SyncStartup()
+	verbose = True
+	write = arguments['-w'] or arguments['--write']
+	sync.new_startups(verbose, write)
+	sync.updated_startups(verbose, write)
 
-sync = SyncStartup()
-sync.new_startups(verbose, write)
-sync.updated_startups(verbose, write)
+
+
+
 
