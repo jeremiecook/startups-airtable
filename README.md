@@ -32,4 +32,6 @@ python3 startup.py
 # Mettre à jour les SE
 python3 startup.py -w
 
+# Mettre à jour les SE de l'environnement access
+python3 startup.py -w -e .access
 ```
