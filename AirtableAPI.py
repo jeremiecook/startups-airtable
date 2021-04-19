@@ -6,15 +6,24 @@ from dotenv import load_dotenv
 
 class AirtableAPI:
 
-    def __init__(self):
-        self.__get_env()
+    def __init__(self, env):
+        self.__get_env(env)
         self.api = airtable.Airtable(self.base, self.key)
         self.startups = {}
 
-    def __get_env(self):
+    def __get_env(self, file = '.env'):
+        path = join(dirname(__file__), file)
+        if not os.path.exists(path):
+            print("❌ Error: cannot find {path} file.".format(path=path))
+            quit()
+
         # Récupérer les variables d'environnement (API Airtable)
-        env = join(dirname(__file__), '.env')
-        load_dotenv(env)
+        load_dotenv(path)
+
+        for param in ['AIRTABLE_BASE_ID', 'AIRTABLE_API_KEY', 'AIRTABLE_TABLE']:
+            if not os.getenv(param):
+                print("❌ Error: {param} missing in {file}.".format(param=param, file=file))
+                quit()
 
         self.base=os.getenv('AIRTABLE_BASE_ID')
         self.key=os.getenv('AIRTABLE_API_KEY')

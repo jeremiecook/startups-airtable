@@ -2,14 +2,15 @@
 
 Usage:
 	startup.py
-	startup.py -w|--write
+	startup.py [-w|--write] [-e ENV] 
 	startup.py -h|--help
 	startup.py -v|--version
 
 Options:
-	-w --write  Sync outdated SE
-	-h --help  Show this screen
-	-v --version  Show version
+	-w --write          Sync outdated SE
+	-h --help           Show this screen
+	-v --version        Show version
+	-e ENV --env=ENV  Use given file for Airtable configuration [default: .env]
 """
 
 # coding: utf-8
@@ -19,14 +20,14 @@ from BetaGouvAPI import BetaGouvAPI
 
 class SyncStartup:
 
-	def __init__(self):
+	def __init__(self, airtable_env):
+		# Load Airtable data
+		self.airtable = AirtableAPI(airtable_env)
+		self.airtable_startups = self.airtable.all()
+
 		# Load BetaGouv data
 		self.beta = BetaGouvAPI()
 		self.beta_startups = self.beta.all()
-
-		# Load Airtable data
-		self.airtable = AirtableAPI()
-		self.airtable_startups = self.airtable.all()
 
 		self.new_se = {}
 		self.changed_se = {}
@@ -92,12 +93,14 @@ class SyncStartup:
 
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='1.0')
-	sync = SyncStartup()
 	verbose = True
 	write = arguments['-w'] or arguments['--write']
+	env = arguments['ENV'] or ".env"
+
+	sync = SyncStartup(env)
 	sync.new_startups(verbose, write)
 	sync.updated_startups(verbose, write)
-
+	
 
 
 
