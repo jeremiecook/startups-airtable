@@ -35,8 +35,9 @@ class SyncStartup:
 			print("\n🆕 Startups ayant évolué :")
 
 		for id, se in self.beta_startups.items():
-			if self.airtable_startups.get(id) and se.get("phase") != self.airtable_startups.get(id).get("phase"):
-				self.__updated_startup(id, se, verbose, update)
+			airtable_se = self.airtable_startups.get(id)
+			if airtable_se and se.get("phase") != airtable_se.get("phase"):
+				self.__updated_startup(id, se, airtable_se, verbose, update)
 
 		if verbose: 
 			print("👉 {count} SE ayant évolué".format(count=len(self.changed_se)))
@@ -58,12 +59,11 @@ class SyncStartup:
 				mission=se.get('mission')
 			))
 
-	def __updated_startup(self, id, se, verbose, update):
+	def __updated_startup(self, id, se, airtable_se, verbose, update):
 		self.changed_se[id] = se
 
 		if update:
-			# TODO : récupérer la date, et charger dans airtable
-			self.airtable.update(id, se.get('name'), se.get('mission'), se.get('phase'))
+			self.airtable.update(airtable_id=airtable_se.get('airtable_id'), id=id, name=se.get('name'), mission=se.get('mission'), phase=se.get('phase'))
 
 		if verbose:
 			print("* {emoji}{name} ({id}) - {phase} to {new_phase}".format(

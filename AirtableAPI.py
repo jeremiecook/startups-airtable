@@ -54,8 +54,16 @@ class AirtableAPI:
                          'Mission': mission, 
                          'Statut': phase})
         except airtable.AirtableError as err:
-            print("Error: cannot create startup {name} ({id}):".format(name=name, id=id))
+            print("❌ Error: cannot create startup {name} ({id}):".format(name=name, id=id))
             print(err)
 
-    def update(self, id, name, mission, phase):
-        end
+    def update(self, airtable_id, id, name, mission, phase):
+        try:
+            self.api.update(self.table, airtable_id,
+                        {'ID': id,
+                         'Nom': name,
+                         'Mission': mission, 
+                         'Statut': phase})
+        except airtable.AirtableError as err:
+            print("❌ Error: cannot update startup {name} ({id}):".format(name=name, id=id))
+            print(err)
