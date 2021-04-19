@@ -75,7 +75,10 @@ class SyncStartup:
 			))
 
 
+verbose = True
+write = False
+
 sync = SyncStartup()
-sync.new_startups()
-sync.updated_startups()
+sync.new_startups(verbose, write)
+sync.updated_startups(verbose, write)
 
