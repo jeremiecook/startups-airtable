@@ -23,7 +23,8 @@ class BetaGouvAPI:
                 name=se.get('attributes').get('name'), 
                 phase=se.get('attributes').get('phases')[-1].get('name'), 
                 mission=se.get('attributes').get('pitch'),
-                incubator=self.incubators.get(incubator_id)
+                incubator=self.incubators.get(incubator_id),
+                statistiques=se.get("attributes").get('stats_url')
             )
 
         return self.startups
