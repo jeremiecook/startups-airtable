@@ -52,8 +52,16 @@ class SyncStartup:
 
 		for id, se in self.beta_startups.items():
 			airtable_se = self.airtable_startups.get(id)
+			# Update des SE qui ont changé de phase
 			if airtable_se and se.get("phase") != airtable_se.get("phase"):
 				self.__updated_startup(id, se, airtable_se, verbose, update)
+			# Update des SE dont un champ est vide
+			if airtable_se and not airtable_se.get("incubator"):
+				self.__updated_startup(id, se, airtable_se, verbose, update)
+				# exit()
+			if airtable_se and not airtable_se.get("statistiques"):
+				self.__updated_startup(id, se, airtable_se, verbose, update)
+				# exit()
 
 		if verbose: 
 			print("👉 {count} SE ayant évolué".format(count=len(self.changed_se)))
@@ -67,10 +75,11 @@ class SyncStartup:
 			self.airtable.create(id, se.get('name'), se.get('mission'), se.get('phase'))
 
 		if verbose:
-			print("* {emoji}{name} ({id}) - {phase} - {mission}".format(
+			print("* {emoji}{name} ({id}) de {incubator} - {phase} - {mission}".format(
 				emoji= "✅ " if create else "",
 				name=se.get('name'), 
 				id=id,
+				incubator=se.get('incubator'),
 				phase=se.get('phase'), 
 				mission=se.get('mission')
 			))
@@ -79,13 +88,14 @@ class SyncStartup:
 		self.changed_se[id] = se
 
 		if update:
-			self.airtable.update(airtable_id=airtable_se.get('airtable_id'), id=id, name=se.get('name'), mission=se.get('mission'), phase=se.get('phase'))
+			self.airtable.update(airtable_id=airtable_se.get('airtable_id'), id=id, data=se)
 
 		if verbose:
-			print("* {emoji}{name} ({id}) - {phase} to {new_phase}".format(
+			print("* {emoji}{name} ({id}) de {incubator} - {phase} to {new_phase}".format(
 				emoji= "✅ " if update else "",
 				name=se.get('name'), 
 				id=id,
+				incubator=se.get('incubator'),
 				phase=self.airtable_startups.get(id).get('phase'), 
 				new_phase=se.get('phase'), 
 			))

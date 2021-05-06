@@ -31,13 +31,14 @@ class AirtableAPI:
 
     def all(self):
         # Récupérer les données Airtable
-        records = self.api.get(self.table, fields=['ID', 'Nom', 'Statut'])
+        records = self.api.get(self.table, fields=['ID', 'Nom', 'Statut', 'Incubateur', 'Statistiques'])
         startups = records['records']
 
+        # TODO : read column name from env
         while records.get('offset'):
             records = self.api.get(
                 self.table,
-                fields=['ID', 'Nom', 'Statut'],
+                fields=['ID', 'Nom', 'Statut', 'Incubateur', 'Statistiques'],
                 offset=records.get('offset')
             )
             startups += records['records']
@@ -47,7 +48,9 @@ class AirtableAPI:
             self.startups[se.get("fields").get("ID")] = dict(
                 name=se.get("fields").get("Nom"), 
                 phase=se.get("fields").get("Statut"), 
-                airtable_id=se.get("id"), 
+                airtable_id=se.get("id"),
+                incubator=se.get("fields").get("Incubateur"),
+                statistiques=se.get("fields").get("Statistiques")
             )
 
         return self.startups
@@ -55,24 +58,27 @@ class AirtableAPI:
     def get(self, id):
         return self.startups.get(id)
 
-    def create(self, id, name, mission, phase):
+    def create(self, id, name, mission, phase, statistiques):
         try:
             self.api.create(self.table,
                         {'ID': id,
                          'Nom': name,
                          'Mission': mission, 
-                         'Statut': phase})
+                         'Statut': phase,
+                         'Statistiques': statistiques})
         except airtable.AirtableError as err:
             print("❌ Error: cannot create startup {name} ({id}):".format(name=name, id=id))
             print(err)
 
-    def update(self, airtable_id, id, name, mission, phase):
+    def update(self, airtable_id, id, data):
         try:
             self.api.update(self.table, airtable_id,
                         {'ID': id,
-                         'Nom': name,
-                         'Mission': mission, 
-                         'Statut': phase})
+                         'Nom': data.get("name"),
+                         'Mission': data.get("mission"),
+                         'Statut': data.get("phase"),
+                         'Incubateur': data.get("incubator"),
+                         'Statistiques': data.get("statistiques")})
         except airtable.AirtableError as err:
             print("❌ Error: cannot update startup {name} ({id}):".format(name=name, id=id))
             print(err)
