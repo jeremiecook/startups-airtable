@@ -72,7 +72,7 @@ class SyncStartup:
 		self.new_se[id] = se
 
 		if create:
-			self.airtable.create(id, se.get('name'), se.get('mission'), se.get('phase'))
+			self.airtable.create(id, se.get('name'), se.get('mission'), se.get('phase'), se.get('statistiques'))
 
 		if verbose:
 			print("* {emoji}{name} ({id}) de {incubator} - {phase} - {mission}".format(
