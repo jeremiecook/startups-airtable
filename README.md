@@ -1,7 +1,14 @@
 # Synchronisation des Startups avec Airtable
 
 
-## Mettre à jour les dépendances
+
+
+## Installer les dépendances
+```
+pip3 install -r requirements.txt
+```
+
+Pour mettre à jour les librairies utilisées dans le projet dans requirements.txt:
 ```
 pip3 install pipreqs
 pipreqs . --force

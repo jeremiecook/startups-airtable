@@ -1,5 +1,4 @@
-requests==2.25.1
-pandas==1.2.3
 airtable==0.4.8
-python-decouple==3.4
-docopt==0.6.1
+docopt==0.6.2
+python-dotenv==0.19.2
+requests==2.27.1
