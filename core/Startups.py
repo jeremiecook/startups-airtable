@@ -44,6 +44,12 @@ class Startups:
                     startup['airtable_id'], self.beta_startups[id])
                 log.info("- 🔄 Mise à jour : " + id)
 
+    def get_airtable_id(self, id):
+        if id in self.airtable_startups.keys():
+            return self.airtable_startups[id].get('airtable_id')
+
+        return False
+
     def __same(self, s1, s2):
         # Compare deux designers
         for key in self.fields.keys():
