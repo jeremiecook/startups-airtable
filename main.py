@@ -17,35 +17,34 @@ Options:
 # coding: utf-8
 from turtle import end_fill
 from docopt import docopt
-# from AirtableAPI import AirtableAPI
-from BetaGouvAPI import BetaGouvMembers
 
 
-class Designers:
+from api.Mattermost import Mattermost
+from core.Designers import Designers
+from core.Startups import Startups
+from utils.Log import Log
+log = Log()
 
-    def __init__(self):
-        end
-
-    def update_designers(self):
-        end
-
-    def add_new_designers(self):
-        end
+# def __compare(self, )
 
 
 if __name__ == '__main__':
+
     arguments = docopt(__doc__, version='1.0')
     verbose = True
     write = arguments['-w'] or arguments['--write']
-    env = arguments['ENV'] or ".env"
+    #env = arguments['ENV'] or ".env"
 
-    # sync = SyncDesigners(env)
-    # sync.new_startups(verbose, write)
-    # sync.updated_startups(verbose, write)
+    startups = Startups()
+    startups.add_new_startups()
+    startups.update_startups()
 
     designers = Designers()
-    designers.update_designers()
     designers.add_new_designers()
+    designers.update_designers()
 
-    #designers = members.all()
-    print(members.get('jeremie.cook'))
+    log.print()
+
+    # Poster un message sur Mattermost
+    # m = Mattermost("hook")
+    # m.post()
