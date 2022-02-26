@@ -13,7 +13,7 @@ class Startups:
 
     table = "Startups d'État"
     fields = {'name': 'Nom', 'phase': 'Statut', 'incubator': 'Incubateur',
-              'statistiques': 'Statistiques', 'start': 'Date de début'}
+              'statistiques': 'Statistiques', 'start': 'Date de début', 'mission': 'Mission'}
 
     def __init__(self):
         self.beta = BetaGouvStartups()

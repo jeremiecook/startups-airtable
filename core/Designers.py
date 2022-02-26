@@ -53,8 +53,8 @@ class Designers:
         for id, designer in self.airtable_designers.items():
             record = self.__prepare_for_airtable(self.beta_members[id])
             if not self.__same(designer, record):
-                print(designer)
-                print(record)
+                # print(designer)
+                # print(record)
                 self.airtable.update(
                     designer['airtable_id'], record)
                 log.info("- 🔄 Mise à jour : " + id)
