@@ -23,9 +23,9 @@ from api.Mattermost import Mattermost
 from core.Designers import Designers
 from core.Startups import Startups
 from utils.Log import Log
+from utils.Env import Env
 log = Log()
-
-# def __compare(self, )
+env = Env()
 
 
 if __name__ == '__main__':
@@ -43,8 +43,11 @@ if __name__ == '__main__':
     designers.add_new_designers()
     designers.update_designers()
 
-    log.print()
-
     # Poster un message sur Mattermost
-    # m = Mattermost("hook")
-    # m.post()
+    m = Mattermost(
+        env.get('MATTERMOST_URL'),
+        env.get('MATTERMOST_KEY')
+    )
+
+    # print(log.get())
+    m.post(log.get())

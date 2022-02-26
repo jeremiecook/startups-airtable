@@ -1,16 +1,17 @@
+# coding: utf-8
 import requests
 
 
 class Mattermost:
 
     def __init__(self, url, key):
-        self.hook = hook
         self.url = url
         self.key = key
 
-    def post(self):
+    def post(self, text):
         headers = {}
-        values = '{"username":"Picasso", "text": "Hello !"}'
+        values = '{"username":"Beta Airtble", "text":"' + text + '"}'
+        #values = '{"username":"Beta Airtble", "text":"hello", "props": {"card": "' + "hello" + '"} }'
         response = requests.post(
-            self.url + '/hooks/' + self.key, headers=headers, data=values)
+            self.url + '/hooks/' + self.key, headers=headers, data=values.encode('utf-8'))
         print(response)

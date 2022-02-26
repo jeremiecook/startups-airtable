@@ -18,3 +18,15 @@ class Log(Singleton):
 
         for text in self.warnings:
             print(text)
+
+    def get(self):
+
+        message = ""
+
+        for text in self.logs:
+            message += text + "\n"
+
+        for text in self.warnings:
+            message += text + "\n"
+
+        return message
