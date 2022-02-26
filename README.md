@@ -18,27 +18,36 @@ pipreqs . --force
 
 Créer un fichier `.env`
 ```
-AIRTABLE_BASE_ID={identifiant de la base, trouvable dans help > API Documentation}
 AIRTABLE_API_KEY={clé, trouvable dans account : personnal api key}
-AIRTABLE_TABLE={nom de la table}
+
+AIRTABLE_STARTUPS_BASE_ID={identifiant de la base startups, trouvable dans help > API Documentation}
+AIRTABLE_DESIGNERS_BASE_ID={identifiant de la base designers, trouvable dans help > API Documentation}
+
+MATTERMOST_URL={L'adresse de l'instance Mattermost}
+MATTERMOST_KEY={L'identifiant du hook créé dans Mattermost}
 ```
 
 Par exemple : 
 ```
-AIRTABLE_BASE_ID=appXXXXXXXX
 AIRTABLE_API_KEY=keyXXXXXXXX
-AIRTABLE_TABLE=Startups
+
+AIRTABLE_DESIGNERS_BASE_ID=appXXXXXXXX
+AIRTABLE_STARTUPS_BASE_ID=appXXXXXXXX
+
+MATTERMOST_URL=https://mattermost.server.com
+MATTERMOST_KEY=XXXXXXXXXX
+
 ```
 
 ## Lancer le programme
 
 ```
 # Voir la liste des SE qui ont changé
-python3 startup.py
+python3 main.py
 
 # Mettre à jour les SE
-python3 startup.py -w
+python3 main.py -w
 
 # Mettre à jour les SE de l'environnement access
-python3 startup.py -w -e .access
+python3 main.py -w -e .access
 ```
