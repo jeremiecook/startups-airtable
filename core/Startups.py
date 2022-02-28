@@ -50,7 +50,7 @@ class Startups:
         return False
 
     def __same(self, s1, s2):
-        # Compare deux designers
+        # Compare deux entités
         for key in self.fields.keys():
             if s1[key] != s2[key]:
                 return False
