@@ -40,14 +40,14 @@ class Airtable:
     def get(self, id, field):
         data = self.api.get(self.table, fields=fields)
 
-    def create(self, id, designer):
+    def create(self, id, content):
         entry = {'ID': id}
 
         # Formater le contenu pour Airtable
         for id, key in self.fields.items():
-            if id in designer:
+            if id in content:
                 # remplace la clé par un nom de champ Airtable
-                entry[key] = designer[id]
+                entry[key] = content[id]
 
         try:
             # print(entry)
