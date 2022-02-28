@@ -52,13 +52,19 @@ class Designers:
         log.info("\n✅ Designers : Mise à jour des fiches")
 
         for id, designer in self.airtable_designers.items():
-            record = self.__prepare_for_airtable(self.beta_members[id])
-            if not self.__same(designer, record):
-                # print(designer)
-                # print(record)
-                self.airtable.update(
-                    designer['airtable_id'], record)
-                log.info("- 🔄 Mise à jour : " + id)
+            try:
+                record = self.__prepare_for_airtable(self.beta_members[id])
+                if not self.__same(designer, record):
+                    # print(designer)
+                    # print(record)
+                    self.airtable.update(
+                        designer['airtable_id'], record)
+                    log.info("- 🔄 Mise à jour : " + id)
+
+            except KeyError as err:
+                if(id): # ignore empty lines
+                    print("❌ Error: cannot update designer {id}:" . format(id=id))
+                    print(err)
 
     def __same(self, d1, d2):
         # Compare deux designers
