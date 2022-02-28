@@ -20,6 +20,8 @@ Créer un fichier `.env`
 AIRTABLE_API_KEY={clé, trouvable dans account : personnal api key}
 
 AIRTABLE_STARTUPS_BASE_ID={identifiant de la base startups, trouvable dans help > API Documentation}
+AIRTABLE_STARTUPS_TABLE={Nom de la table contenant les startups}
+
 AIRTABLE_DESIGNERS_BASE_ID={identifiant de la base designers, trouvable dans help > API Documentation}
 
 MATTERMOST_URL={L'adresse de l'instance Mattermost}
@@ -30,8 +32,10 @@ Par exemple :
 ```
 AIRTABLE_API_KEY=keyXXXXXXXX
 
-AIRTABLE_DESIGNERS_BASE_ID=appXXXXXXXX
 AIRTABLE_STARTUPS_BASE_ID=appXXXXXXXX
+AIRTABLE_STARTUPS_TABLE=Startups d'État
+
+AIRTABLE_DESIGNERS_BASE_ID=appXXXXXXXX
 
 MATTERMOST_URL=https://mattermost.server.com
 MATTERMOST_KEY=XXXXXXXXXX

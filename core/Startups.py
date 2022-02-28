@@ -11,7 +11,6 @@ env = Env()
 
 class Startups:
 
-    table = "Startups d'État"
     fields = {'name': 'Nom', 'phase': 'Statut', 'incubator': 'Incubateur',
               'statistiques': 'Statistiques', 'start': 'Date de début', 'mission': 'Mission'}
 
@@ -22,7 +21,7 @@ class Startups:
         self.airtable = Airtable(
             env.get('AIRTABLE_STARTUPS_BASE_ID'),
             env.get('AIRTABLE_API_KEY'),
-            self.table,
+            env.get('AIRTABLE_STARTUPS_TABLE'),
             self.fields
         )
 
