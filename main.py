@@ -15,7 +15,6 @@ Options:
 """
 
 # coding: utf-8
-from turtle import end_fill
 from docopt import docopt
 
 
