@@ -3,11 +3,12 @@ from airtable import airtable
 
 class Airtable:
 
-    def __init__(self, base, api_key, table, fields):
+    def __init__(self, base, api_key, table, fields, dry=False):
         self.api = airtable.Airtable(base, api_key)
         self.id = 'ID'  # airtable field for id
         self.table = table
         self.fields = fields  # field to get from airtable
+        self.dry = dry
 
     def all(self):
         # Récupère tous les enregistrements Airtable...
@@ -50,8 +51,8 @@ class Airtable:
                 entry[key] = content[id]
 
         try:
-            # print(entry)
-            self.api.create(self.table, entry)
+            if not self.dry:
+                self.api.create(self.table, entry)
 
         except airtable.AirtableError as err:
             print(
@@ -68,7 +69,8 @@ class Airtable:
                 entry[key] = data[id]
 
         try:
-            self.api.update(self.table, airtable_id, entry)
+            if not self.dry:
+                self.api.update(self.table, airtable_id, entry)
 
         except airtable.AirtableError as err:
             print("❌ Error: cannot update startup {id}:".format(

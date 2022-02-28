@@ -14,7 +14,7 @@ class Startups:
     fields = {'name': 'Nom', 'phase': 'Statut', 'incubator': 'Incubateur',
               'statistiques': 'Statistiques', 'start': 'Date de début', 'mission': 'Mission'}
 
-    def __init__(self):
+    def __init__(self, dry=False):
         self.beta = BetaGouvStartups()
         self.beta_startups = self.beta.all()
 
@@ -22,7 +22,8 @@ class Startups:
             env.get('AIRTABLE_STARTUPS_BASE_ID'),
             env.get('AIRTABLE_API_KEY'),
             env.get('AIRTABLE_STARTUPS_TABLE'),
-            self.fields
+            self.fields,
+            dry
         )
 
         self.airtable_startups = self.airtable.all()

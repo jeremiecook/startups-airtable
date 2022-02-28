@@ -15,7 +15,7 @@ class Designers:
     fields = {'fullname': 'Nom', 'role': 'Rôle', 'status': 'Statut',
               'startups': 'Startups', 'start': 'Arrivée', 'end': 'Fin de mission'}
 
-    def __init__(self):
+    def __init__(self, dry=False):
         self.beta = BetaGouvMembers()
         self.beta_members = self.beta.all()
         self.beta_designers = self.beta.designers()
@@ -24,7 +24,8 @@ class Designers:
             env.get('AIRTABLE_DESIGNERS_BASE_ID'),
             env.get('AIRTABLE_API_KEY'),
             self.table,
-            self.fields
+            self.fields,
+            dry
         )
 
         self.airtable_designers = self.airtable.all()
