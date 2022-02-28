@@ -33,7 +33,7 @@ class Designers:
         airtable_se = Airtable(
             env.get('AIRTABLE_DESIGNERS_BASE_ID'),
             env.get('AIRTABLE_API_KEY'),
-            "Startups d'État",
+            env.get('AIRTABLE_STARTUPS_TABLE'),
             {'id': 'ID'}
         )
 
