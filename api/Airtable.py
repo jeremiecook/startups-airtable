@@ -55,7 +55,7 @@ class Airtable:
 
         except airtable.AirtableError as err:
             print(
-                "❌ Error: cannot create startup {name} ({id}):" . format(id=id))
+                "❌ Error: cannot create startup {id}:" . format(id=id))
             print(err)
 
     def update(self, airtable_id, data):
@@ -71,6 +71,6 @@ class Airtable:
             self.api.update(self.table, airtable_id, entry)
 
         except airtable.AirtableError as err:
-            print("❌ Error: cannot update startup {name} ({id}):".format(
+            print("❌ Error: cannot update startup {id}:".format(
                 id=id))
             print(err)
