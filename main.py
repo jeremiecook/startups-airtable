@@ -33,19 +33,22 @@ if __name__ == '__main__':
     write = arguments['-w'] or arguments['--write']
     #env = arguments['ENV'] or ".env"
 
-    startups = Startups()
-    startups.add_new_startups()
-    startups.update_startups()
+    if(env.exists('AIRTABLE_STARTUPS_BASE_ID')):
+        startups = Startups()
+        startups.add_new_startups()
+        startups.update_startups()
 
-    designers = Designers()
-    designers.add_new_designers()
-    designers.update_designers()
+    if(env.exists('AIRTABLE_DESIGNERS_BASE_ID')):
+        designers = Designers()
+        designers.add_new_designers()
+        designers.update_designers()
 
-    # Poster un message sur Mattermost
-    m = Mattermost(
-        env.get('MATTERMOST_URL'),
-        env.get('MATTERMOST_KEY')
-    )
-
-    # print(log.get())
-    m.post(log.get())
+    if(env.exists('MATTERMOST_URL')):
+        # Poster un message sur Mattermost
+        m = Mattermost(
+            env.get('MATTERMOST_URL'),
+            env.get('MATTERMOST_KEY')
+        )
+        m.post(log.get())
+    else:
+        print(log.get())

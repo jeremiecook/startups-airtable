@@ -12,8 +12,11 @@ class Env(Singleton):
             print("❌ Error: cannot find {path} file.".format(path=self.path))
             quit()
 
-        # Récupérer les variables d'environnement (API Airtable)
+        # Récupérer les variables d'environnement
         load_dotenv(self.path)
+
+    def exists(self, param):
+        return os.getenv(param)
 
     def get(self, param):
         if not os.getenv(param):
