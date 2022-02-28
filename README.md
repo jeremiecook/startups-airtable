@@ -1,9 +1,8 @@
-# Synchronisation des Startups avec Airtable
+# Synchronisation des données beta.gouv.fr sur Airtable
 
+## Installation
 
-
-
-## Installer les dépendances
+### Dépendances
 ```
 pip3 install -r requirements.txt
 ```
@@ -14,7 +13,7 @@ pip3 install pipreqs
 pipreqs . --force
 ```
 
-## Configurer le script
+### Configuration
 
 Créer un fichier `.env`
 ```
