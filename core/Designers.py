@@ -59,7 +59,7 @@ class Designers:
                     # print(record)
                     self.airtable.update(
                         designer['airtable_id'], record)
-                    log.info("- 🔄 Mise à jour : " + id)
+                    log.info("- 🔄 Mise à jour : {id} ({diff})".format(id=id, diff=", ".join(self.diff(designer, record))))
 
             except KeyError as err:
                 if(id): # ignore empty lines
@@ -72,6 +72,13 @@ class Designers:
             if d1[key] != d2[key]:
                 return False
         return True
+
+    def diff(self, s1, s2):
+        differents_keys = []
+        for key in self.fields.keys():
+            if s1[key] != s2[key]:
+                differents_keys.append(self.fields[key]) 
+        return differents_keys
 
     # TODO Code à refactorer
 
