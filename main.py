@@ -31,7 +31,6 @@ env = Env()
 if __name__ == '__main__':
 
     arguments = docopt(__doc__, version='1.0')
-    verbose = True
     write = arguments['-w'] or arguments['--write']
     #env = arguments['ENV'] or ".env"
 
