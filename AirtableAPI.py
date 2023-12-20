@@ -31,7 +31,7 @@ class AirtableAPI:
 
     def all(self):
         # Récupérer les données Airtable
-        records = self.api.get(self.table, fields=['ID', 'Nom', 'Statut', 'Incubateur', 'Statistiques'])
+        records = self.api.get(self.table, fields=['ID', 'Nom', 'Phase', 'Incubateur', 'Statistiques'])
         startups = records['records']
 
         # TODO : read column name from env
@@ -47,7 +47,7 @@ class AirtableAPI:
         for se in startups:
             self.startups[se.get("fields").get("ID")] = dict(
                 name=se.get("fields").get("Nom"), 
-                phase=se.get("fields").get("Statut"), 
+                phase=se.get("fields").get("Phase"), 
                 airtable_id=se.get("id"),
                 incubator=se.get("fields").get("Incubateur"),
                 statistiques=se.get("fields").get("Statistiques"),
@@ -78,7 +78,7 @@ class AirtableAPI:
                         {'ID': id,
                          'Nom': data.get("name"),
                          'Mission': data.get("mission"),
-                         'Statut': data.get("phase"),
+                         'Phase': data.get("phase"),
                          'Incubateur': data.get("incubator"),
                          'URL': data.get("url"),
                          'Statistiques': data.get("statistiques")
