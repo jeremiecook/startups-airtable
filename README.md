@@ -23,6 +23,17 @@ AIRTABLE_API_KEY=keyXXXXXXXX
 AIRTABLE_TABLE=Startups
 ```
 
+## Configurer une Base Airtable
+
+Créer les colonnes 
+- ID (texte court)
+- Nom (texte court)
+- Statut (choix déroulant)
+- Incubateur (choix déroulant)
+- Statistiques (url)
+- Mission (texte long)
+
+
 ## Lancer le programme
 
 ```
