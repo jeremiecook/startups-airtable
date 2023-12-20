@@ -17,7 +17,7 @@ class BetaGouvAPI:
 
         # Load result in a nice dict    
         for se in startups.get('data'):
-            incubator_id = "/incubators/{name}".format(name=se.get('relationships').get('incubator').get('data').get('id'))
+            incubator_id = "/incubateurs/{name}".format(name=se.get('relationships').get('incubator').get('data').get('id'))
 
             self.startups[se.get('id')] = dict(
                 name=se.get('attributes').get('name'), 
