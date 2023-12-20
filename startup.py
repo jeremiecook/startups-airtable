@@ -61,7 +61,9 @@ class SyncStartup:
 				# exit()
 			if airtable_se and not airtable_se.get("statistiques"):
 				self.__updated_startup(id, se, airtable_se, verbose, update)
-				# exit()
+			if airtable_se and not airtable_se.get("URL"):
+				self.__updated_startup(id, se, airtable_se, verbose, update)
+				continue
 
 		if verbose: 
 			print("👉 {count} SE ayant évolué".format(count=len(self.changed_se)))
@@ -72,7 +74,7 @@ class SyncStartup:
 		self.new_se[id] = se
 
 		if create:
-			self.airtable.create(id, se.get('name'), se.get('mission'), se.get('phase'), se.get('statistiques'))
+			self.airtable.create(id, se.get('name'), se.get('mission'), se.get('phase'), se.get('url'), se.get('statistiques'))
 
 		if verbose:
 			print("* {emoji}{name} ({id}) de {incubator} - {phase} - {mission}".format(

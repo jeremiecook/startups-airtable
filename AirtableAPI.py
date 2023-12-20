@@ -38,7 +38,7 @@ class AirtableAPI:
         while records.get('offset'):
             records = self.api.get(
                 self.table,
-                fields=['ID', 'Nom', 'Statut', 'Incubateur', 'Statistiques'],
+                fields=['ID', 'Nom', 'Phase', 'Incubateur', 'Statistiques', 'URL'],
                 offset=records.get('offset')
             )
             startups += records['records']
@@ -50,7 +50,8 @@ class AirtableAPI:
                 phase=se.get("fields").get("Statut"), 
                 airtable_id=se.get("id"),
                 incubator=se.get("fields").get("Incubateur"),
-                statistiques=se.get("fields").get("Statistiques")
+                statistiques=se.get("fields").get("Statistiques"),
+                url=se.get("fields").get("URL")
             )
 
         return self.startups
@@ -58,13 +59,14 @@ class AirtableAPI:
     def get(self, id):
         return self.startups.get(id)
 
-    def create(self, id, name, mission, phase, statistiques):
+    def create(self, id, name, mission, phase, url, statistiques):
         try:
             self.api.create(self.table,
                         {'ID': id,
                          'Nom': name,
                          'Mission': mission, 
-                         'Statut': phase,
+                         'Phase': phase,
+                         'URL': url,
                          'Statistiques': statistiques})
         except airtable.AirtableError as err:
             print("❌ Error: cannot create startup {name} ({id}):".format(name=name, id=id))
@@ -78,7 +80,9 @@ class AirtableAPI:
                          'Mission': data.get("mission"),
                          'Statut': data.get("phase"),
                          'Incubateur': data.get("incubator"),
-                         'Statistiques': data.get("statistiques")})
+                         'URL': data.get("url"),
+                         'Statistiques': data.get("statistiques")
+                         })
         except airtable.AirtableError as err:
             print("❌ Error: cannot update startup {name} ({id}):".format(name=name, id=id))
             print(err)
