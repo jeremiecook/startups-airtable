@@ -55,12 +55,14 @@ class SyncStartup:
 			# Update des SE qui ont changé de phase
 			if airtable_se and se.get("phase") != airtable_se.get("phase"):
 				self.__updated_startup(id, se, airtable_se, verbose, update)
+				continue
 			# Update des SE dont un champ est vide
 			if airtable_se and not airtable_se.get("incubator"):
 				self.__updated_startup(id, se, airtable_se, verbose, update)
-				# exit()
+				continue
 			if airtable_se and not airtable_se.get("statistiques"):
 				self.__updated_startup(id, se, airtable_se, verbose, update)
+				continue
 			if airtable_se and not airtable_se.get("URL"):
 				self.__updated_startup(id, se, airtable_se, verbose, update)
 				continue
